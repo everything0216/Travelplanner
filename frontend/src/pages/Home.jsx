@@ -42,11 +42,13 @@ function Home() {
       )}
 
       {trips.map((trip) => (
-        <div key={trip.id}>
-          <h3>{trip.name}</h3>
-          <p>{trip.destination}</p>
-        </div>
-      ))}
+        <Link key={trip.id} to={`/trips/${trip.id}`}>
+            <div>
+            <h3>{trip.name}</h3>
+            <p>{trip.destination}</p>
+            </div>
+        </Link>
+        ))}
     </div>
   );
 }

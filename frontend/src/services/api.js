@@ -25,3 +25,22 @@ export async function createTrip(trip) {
 
   return response.json();
 }
+
+export async function createExpense(tripId, expense) {
+  const response = await fetch(
+    `${API_BASE_URL}/trips/${tripId}/expenses`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(expense),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to create expense");
+  }
+
+  return response.json();
+}
