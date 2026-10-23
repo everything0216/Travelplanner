@@ -1,2 +1,13 @@
-package com.example.travelplanner.repository;public class UserRepository {
+package com.example.travelplanner.repository;
+
+import com.example.travelplanner.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface UserRepository extends JpaRepository<User, Long> {
+
+    Optional<User> findByEmail(String email);
+
+    boolean existsByEmail(String email);
 }

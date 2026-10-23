@@ -2,6 +2,7 @@ package com.example.travelplanner.entity;
 
 import jakarta.persistence.*;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "trip_members")
@@ -14,6 +15,12 @@ public class TripMember {
     private String name;
 
     private String email;
+
+    // 這個成員對應到哪一個登入 User
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @JsonBackReference
     @ManyToOne
@@ -45,6 +52,14 @@ public class TripMember {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Trip getTrip() {
