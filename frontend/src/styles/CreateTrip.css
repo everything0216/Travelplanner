@@ -1,0 +1,487 @@
+.create-trip-page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 32px 40px 70px;
+
+  background:
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(255, 226, 180, 0.35),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 90% 80%,
+      rgba(200, 225, 255, 0.4),
+      transparent 30%
+    ),
+    #f7f6f2;
+}
+
+.create-trip-wrapper {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+/* =========================
+   Back button
+========================= */
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 35px;
+
+  color: #555;
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: transform 0.2s ease,
+              color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #111;
+  transform: translateX(-4px);
+}
+
+/* =========================
+   Main layout
+========================= */
+
+.create-trip-layout {
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 80px;
+
+  align-items: center;
+
+  min-height: 650px;
+}
+
+/* =========================
+   Left introduction
+========================= */
+
+.create-trip-intro {
+  padding: 20px 0;
+}
+
+.intro-badge {
+  display: inline-flex;
+  align-items: center;
+
+  padding: 8px 14px;
+
+  border: 1px solid #dedbd3;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.65);
+
+  color: #777;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+}
+
+.create-trip-intro h1 {
+  margin: 28px 0 24px;
+
+  color: #171717;
+
+  font-size: clamp(48px, 5vw, 72px);
+  line-height: 0.98;
+  letter-spacing: -3px;
+  font-weight: 700;
+}
+
+.create-trip-intro h1 span {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.create-trip-intro p {
+  max-width: 430px;
+
+  margin: 0;
+
+  color: #777;
+
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.intro-decoration {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-top: 45px;
+
+  color: #999;
+
+  font-size: 15px;
+}
+
+.intro-decoration span:first-child {
+  font-size: 28px;
+  transform: rotate(-15deg);
+}
+
+/* =========================
+   Card
+========================= */
+
+.create-trip-card {
+  position: relative;
+
+  padding: 42px;
+
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 28px;
+
+  background: rgba(255, 255, 255, 0.88);
+
+  box-shadow:
+    0 25px 70px rgba(0, 0, 0, 0.08),
+    0 4px 15px rgba(0, 0, 0, 0.03);
+
+  backdrop-filter: blur(10px);
+}
+
+.card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  margin-bottom: 32px;
+}
+
+.card-label {
+  color: #999;
+
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+}
+
+.card-header h2 {
+  margin: 8px 0 0;
+
+  color: #181818;
+
+  font-size: 30px;
+  letter-spacing: -1px;
+}
+
+.card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 48px;
+  height: 48px;
+
+  border-radius: 15px;
+
+  background: #f1eee7;
+
+  font-size: 22px;
+
+  transform: rotate(-8deg);
+}
+
+/* =========================
+   Form
+========================= */
+
+.create-trip-form {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.form-group label {
+  color: #444;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.form-group input {
+  width: 100%;
+  box-sizing: border-box;
+
+  padding: 14px 16px;
+
+  border: 1px solid #e2e0dc;
+  border-radius: 12px;
+
+  outline: none;
+
+  background: #fafaf9;
+
+  color: #222;
+
+  font-size: 14px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.form-group input:hover {
+  border-color: #ccc9c3;
+}
+
+.form-group input:focus {
+  border-color: #999;
+
+  background: white;
+
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.035);
+}
+
+.form-group input::placeholder {
+  color: #b4b2ae;
+}
+
+/* =========================
+   Destination
+========================= */
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-with-icon > span {
+  position: absolute;
+
+  left: 15px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  font-size: 15px;
+}
+
+.input-with-icon input {
+  padding-left: 42px;
+}
+
+/* =========================
+   Date
+========================= */
+
+.date-section {
+  display: grid;
+
+  grid-template-columns: 1fr 30px 1fr;
+
+  align-items: end;
+
+  gap: 8px;
+}
+
+.date-arrow {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  height: 42px;
+
+  color: #aaa;
+
+  font-size: 18px;
+}
+
+/* =========================
+   Budget
+========================= */
+
+.budget-input {
+  position: relative;
+}
+
+.currency {
+  position: absolute;
+
+  left: 5px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #888;
+
+  font-size: 14px;
+}
+
+.budget-input input {
+  padding-left: 32px;
+}
+
+/* =========================
+   Button
+========================= */
+
+.create-trip-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  margin-top: 8px;
+
+  padding: 16px 18px 16px 22px;
+
+  border: none;
+  border-radius: 13px;
+
+  background: #1d1d1b;
+
+  color: white;
+
+  cursor: pointer;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.create-trip-button:hover {
+  background: #333;
+
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+.create-trip-button:active {
+  transform: translateY(0);
+}
+
+.button-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 50%;
+
+  background: rgba(255, 255, 255, 0.12);
+
+  font-size: 17px;
+
+  transition: transform 0.2s ease;
+}
+
+.create-trip-button:hover .button-arrow {
+  transform: translateX(3px);
+}
+
+/* =========================
+   Footer
+========================= */
+
+.form-footer {
+  margin: 20px 0 0;
+
+  color: #aaa;
+
+  font-size: 11px;
+  line-height: 1.6;
+  text-align: center;
+}
+
+/* =========================
+   Responsive
+========================= */
+
+@media (max-width: 900px) {
+  .create-trip-layout {
+    grid-template-columns: 1fr;
+
+    gap: 40px;
+
+    max-width: 650px;
+
+    margin: 0 auto;
+  }
+
+  .create-trip-intro {
+    text-align: center;
+  }
+
+  .create-trip-intro p {
+    margin: 0 auto;
+  }
+
+  .intro-decoration {
+    justify-content: center;
+  }
+
+  .create-trip-intro h1 {
+    font-size: 52px;
+  }
+}
+
+@media (max-width: 600px) {
+  .create-trip-page {
+    padding: 24px 18px 50px;
+  }
+
+  .back-link {
+    margin-bottom: 25px;
+  }
+
+  .create-trip-intro h1 {
+    margin-top: 22px;
+
+    font-size: 43px;
+    letter-spacing: -2px;
+  }
+
+  .create-trip-intro p {
+    font-size: 14px;
+  }
+
+  .create-trip-card {
+    padding: 28px 22px;
+
+    border-radius: 22px;
+  }
+
+  .card-header h2 {
+    font-size: 25px;
+  }
+
+  .date-section {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .date-arrow {
+    display: none;
+  }
+}

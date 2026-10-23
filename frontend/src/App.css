@@ -182,3 +182,55 @@
     border-right-color: var(--border);
   }
 }
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f5;
+  padding: 24px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 420px;
+  background: white;
+  padding: 36px;
+  border-radius: 16px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.auth-card h1 {
+  margin-bottom: 8px;
+}
+
+.auth-description {
+  color: #777;
+  margin-bottom: 28px;
+}
+
+.auth-button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  color: #666;
+}
+
+.auth-footer a {
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.error-message {
+  background: #fff0f0;
+  color: #c0392b;
+  padding: 10px 12px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  font-size: 14px;
+}
