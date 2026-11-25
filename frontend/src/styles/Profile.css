@@ -1,0 +1,636 @@
+
+.profile-page {
+  min-height: 100vh;
+  background: #f7f5f0;
+  padding: 40px 8%;
+  color: #343a35;
+}
+
+.profile-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.profile-cover {
+  height: 300px;
+  border-radius: 20px;
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.05),
+      rgba(0, 0, 0, 0.35)
+    ),
+    url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b")
+    center 50% / cover;
+}
+
+.profile-header {
+  background: white;
+  border-radius: 20px;
+  padding: 0 40px 35px;
+  margin-top: -35px;
+  position: relative;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 5px solid white;
+  background: #e8e4da;
+  object-fit: cover;
+  margin-top: -55px;
+  position: relative;
+}
+
+.profile-info {
+  margin-top: 15px;
+}
+
+.profile-info h1 {
+  font-size: 30px;
+  margin: 0 0 8px;
+}
+
+.profile-email,
+.profile-location {
+  color: #888;
+  margin: 6px 0;
+}
+
+.profile-bio {
+  margin-top: 18px;
+  line-height: 1.7;
+  color: #666;
+  max-width: 650px;
+}
+
+.profile-edit-button {
+  margin-top: 20px;
+  padding: 11px 25px;
+  border: none;
+  border-radius: 8px;
+  background: #526b58;
+  color: white;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.profile-edit-button:hover {
+  background: #405745;
+}
+
+/* Profile Edit Form */
+.profile-edit-form {
+  margin-top: 25px;
+  padding: 30px;
+  background: #faf9f6;
+  border: 1px solid #eeece5;
+  border-radius: 16px;
+  max-width: 700px;
+}
+
+.profile-form-heading {
+  margin-bottom: 28px;
+}
+
+.profile-form-heading h2 {
+  font-size: 22px;
+  margin: 0 0 8px;
+  color: #343a35;
+}
+
+.profile-form-heading p {
+  color: #92958e;
+  font-size: 14px;
+  margin: 0;
+}
+
+.profile-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 22px;
+}
+
+.profile-form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #526b58;
+  margin-bottom: 9px;
+}
+
+.profile-input,
+.profile-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px 15px;
+  border: 1px solid #e3e2da;
+  border-radius: 9px;
+  background: white;
+  font-size: 14px;
+  color: #343a35;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.profile-input:focus,
+.profile-textarea:focus {
+  border-color: #7b947f;
+  box-shadow: 0 0 0 3px rgba(82, 107, 88, 0.1);
+}
+
+.profile-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.7;
+}
+
+.profile-email-display {
+  padding: 13px 15px;
+  background: #eeece5;
+  border-radius: 9px;
+  color: #85877f;
+  font-size: 14px;
+}
+
+.profile-hint {
+  margin-top: 7px;
+  font-size: 12px;
+  color: #a3a39b;
+}
+
+.profile-form-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.profile-save-button,
+.profile-cancel-button {
+  padding: 12px 25px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile-save-button {
+  border: none;
+  background: #526b58;
+  color: white;
+}
+
+.profile-save-button:hover {
+  background: #405745;
+}
+
+.profile-cancel-button {
+  border: 1px solid #deded5;
+  background: white;
+  color: #666b64;
+}
+
+.profile-cancel-button:hover {
+  background: #f0efe9;
+}
+
+/* Profile Display Layout */
+.profile-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 0 40px 40px;
+}
+
+.profile-avatar {
+  flex-shrink: 0;
+}
+
+.profile-info {
+  flex: 1;
+  min-width: 0;
+  margin-top: 25px;
+}
+
+.profile-info h1 {
+  font-size: 32px;
+  font-weight: 600;
+  color: #343a35;
+  letter-spacing: -0.5px;
+}
+
+.profile-email {
+  font-size: 14px;
+  color: #999b94;
+}
+
+.profile-location {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 7px 13px;
+  background: #f0f2ec;
+  border-radius: 20px;
+  color: #526b58;
+  font-size: 13px;
+}
+
+.profile-bio {
+  margin-top: 20px;
+  max-width: 650px;
+  line-height: 1.8;
+  color: #72766f;
+  font-size: 15px;
+}
+
+.profile-bio p {
+  margin: 0;
+}
+
+.profile-edit-button {
+  margin-top: 22px;
+  padding: 11px 25px;
+  border-radius: 9px;
+  background: #526b58;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.profile-edit-button:hover {
+  background: #405745;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(64, 87, 69, 0.15);
+}
+
+/* Travel Statistics */
+
+.travel-stats-section {
+  margin-top: 45px;
+}
+
+.travel-stats-heading {
+  margin-bottom: 22px;
+}
+
+.travel-stats-heading h2 {
+  font-size: 24px;
+  color: #343a35;
+  margin: 0 0 8px;
+}
+
+.travel-stats-heading p {
+  color: #999b94;
+  font-size: 14px;
+  margin: 0;
+}
+
+.travel-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.travel-stat-card {
+  background: white;
+  border: 1px solid #eeece5;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.025);
+  transition: all 0.25s ease;
+}
+
+.travel-stat-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+}
+
+.travel-stat-icon {
+  font-size: 25px;
+  margin-bottom: 18px;
+}
+
+.travel-stat-label {
+  color: #92958e;
+  font-size: 13px;
+  margin: 0 0 8px;
+}
+
+.travel-stat-card h3 {
+  color: #526b58;
+  font-size: 30px;
+  margin: 0 0 8px;
+  font-weight: 600;
+}
+
+.travel-stat-card span {
+  color: #aaa99f;
+  font-size: 12px;
+}
+
+
+/* Travel History */
+.travel-history-section {
+  margin-top: 50px;
+}
+
+.travel-history-heading {
+  margin-bottom: 25px;
+}
+
+.travel-history-heading h2 {
+  font-size: 24px;
+  color: #354b3b;
+  margin-bottom: 8px;
+}
+
+.travel-history-heading p {
+  color: #888;
+  font-size: 14px;
+}
+
+.travel-history-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.travel-history-card {
+  background: #fff;
+  border: 1px solid #e8ebe7;
+  border-radius: 14px;
+  padding: 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.travel-history-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.travel-history-card-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 18px;
+}
+
+.trip-status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.trip-status.upcoming {
+  background: #eaf0e8;
+  color: #527052;
+}
+
+.trip-status.ongoing {
+  background: #fff1d9;
+  color: #a66b19;
+}
+
+.trip-status.completed {
+  background: #eeeeee;
+  color: #777;
+}
+
+.travel-history-card h3 {
+  font-size: 20px;
+  color: #354b3b;
+  margin-bottom: 12px;
+}
+
+.travel-history-destination {
+  color: #68766a;
+  font-size: 14px;
+  margin-bottom: 12px;
+}
+
+.travel-history-date {
+  color: #999;
+  font-size: 13px;
+}
+
+.travel-history-empty {
+  background: #fff;
+  border: 1px dashed #d8ded7;
+  border-radius: 14px;
+  padding: 35px;
+  text-align: center;
+  color: #999;
+}
+
+/* =========================
+   Travel Gallery
+========================= */
+
+.travel-gallery-section {
+  margin-top: 48px;
+}
+
+.travel-gallery-heading {
+  margin-bottom: 24px;
+}
+
+.travel-gallery-heading h2 {
+  font-size: 24px;
+  color: #354b3b;
+  margin-bottom: 8px;
+}
+
+.travel-gallery-heading p {
+  color: #888;
+  font-size: 14px;
+}
+
+.travel-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.travel-gallery-card {
+  background: #ffffff;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.travel-gallery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.1);
+}
+
+.travel-gallery-card img {
+  width: 100%;
+  height: 230px;
+  object-fit: cover;
+  display: block;
+}
+
+.travel-gallery-info {
+  padding: 16px;
+}
+
+.travel-gallery-info h3 {
+  font-size: 16px;
+  color: #354b3b;
+  margin: 0 0 10px;
+  overflow-wrap: anywhere;
+}
+
+.travel-gallery-info p {
+  font-size: 13px;
+  color: #888;
+  margin-bottom: 12px;
+}
+
+.travel-gallery-info span {
+  font-size: 13px;
+  color: #526b58;
+  font-weight: 600;
+}
+
+.travel-gallery-empty {
+  padding: 35px;
+  background: #f8f9f6;
+  border-radius: 12px;
+  color: #888;
+  text-align: center;
+}
+
+/* =========================
+   Profile Navigation
+========================= */
+
+.profile-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  padding: 16px 22px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid #e8e5dd;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.03);
+}
+
+.profile-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #202020;
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.profile-nav-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 11px;
+  background: #1d1d1b;
+  color: white;
+  font-size: 17px;
+}
+
+.profile-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.profile-nav-link {
+  padding: 10px 15px;
+  border-radius: 9px;
+  color: #666;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.profile-nav-link:hover {
+  background: #f3f1eb;
+  color: #222;
+}
+
+.profile-nav-link.active {
+  background: #eef2e8;
+  color: #52634a;
+}
+
+.profile-nav-create {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 40px;
+  padding: 0 16px;
+  box-sizing: border-box;
+
+  border-radius: 9px;
+  background: #1d1d1b;
+  color: white;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: all 0.2s ease;
+}
+
+.profile-nav-create:hover {
+  background: #3a3a36;
+  transform: translateY(-2px);
+}
+
+.profile-nav-logout {
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 9px;
+  background: white;
+  color: #666;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.profile-nav-logout:hover {
+  background: #f5f5f5;
+  color: #222;
+}
+
+/* Profile Icon */
+
+.profile-icon-link {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  box-sizing: border-box;
+  border-radius: 9px;
+  white-space: nowrap;
+}
+
+.profile-person-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}

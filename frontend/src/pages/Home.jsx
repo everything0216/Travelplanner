@@ -44,27 +44,41 @@ function Home() {
         {/* Header */}
         <header className="home-header">
 
-          <div className="brand">
+          <Link to="/" className="brand">
             <div className="brand-icon">✈</div>
-
             <div>
-              <div className="brand-name">
-                Travel Planner
-              </div>
-
-              <div className="brand-subtitle">
-                Plan less. Travel more.
-              </div>
+              <div className="brand-name">Travel Planner</div>
+              <div className="brand-subtitle">Plan less. Travel more.</div>
             </div>
-          </div>
+          </Link>
 
           <div className="home-header-actions">
-
             {token && user ? (
               <>
-                <span className="welcome-user">
-                  Hi, {user.nickname}
-                </span>
+                <Link to="/" className="home-nav-link active">
+                  Home
+                </Link>
+
+                <Link to="/profile" className="home-nav-link profile-icon-link">
+                  <svg
+                    className="profile-person-icon"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <circle cx="12" cy="8" r="4" />
+                    <path d="M5 21a7 7 0 0 1 14 0" />
+                  </svg>
+                  <span>My Profile</span>
+                </Link>
+
+                <Link to="/trips/new" className="create-trip-button">
+                  <span>＋</span>
+                  Create Trip
+                </Link>
 
                 <button
                   type="button"
@@ -76,30 +90,15 @@ function Home() {
               </>
             ) : (
               <>
-                <Link
-                  to="/login"
-                  className="login-button"
-                >
-                  Login
-                </Link>
+                <Link to="/login" className="login-button">Login</Link>
+                <Link to="/register" className="register-button">Register</Link>
 
-                <Link
-                  to="/register"
-                  className="register-button"
-                >
-                  Register
+                <Link to="/trips/new" className="create-trip-button">
+                  <span>＋</span>
+                  Create Trip
                 </Link>
               </>
             )}
-
-            <Link
-              to="/trips/new"
-              className="create-trip-button"
-            >
-              <span>＋</span>
-              Create Trip
-            </Link>
-
           </div>
 
         </header>

@@ -20,6 +20,10 @@ import {
   createMemo,
   updateMemo,
   deleteMemo,
+  uploadTripPhoto,
+  getTripPhotos,
+  deletePhoto,
+  getPhotoImage,
 } from "../services/api";
 import "../styles/TripDetail.css";
 
@@ -27,6 +31,10 @@ function TripDetail() {
   const { tripId } = useParams();
 
   const [trip, setTrip] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileNickname, setProfileNickname] = useState("");
+  const [profileMessage, setProfileMessage] = useState("");
   const [expenses, setExpenses] = useState([]);
   const [members, setMembers] = useState([]);
 
@@ -49,10 +57,18 @@ function TripDetail() {
   const [itineraryMapsUrl, setItineraryMapsUrl] = useState("");
   const [itineraryNote, setItineraryNote] = useState("");
   const [itineraryCost, setItineraryCost] = useState("");
-  const [activeSection, setActiveSection] = useState("itinerary");
+  const [activeSection, setActiveSection] = useState("overview");
   const [showItineraryForm, setShowItineraryForm] = useState(false);
   const [editingItineraryId, setEditingItineraryId] = useState(null);
   const [selectedDay, setSelectedDay] = useState(0);
+
+  // Photos
+  const [photos, setPhotos] = useState([]);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+  const [photoCaption, setPhotoCaption] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
+  const [photoUrls, setPhotoUrls] = useState({});
 
   
 
@@ -89,7 +105,46 @@ function TripDetail() {
 
   const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
+  // Dashboard statistics
+
+  // Trip duration
+  const tripDuration =
+    trip?.startDate && trip?.endDate
+      ? Math.max(
+          1,
+          Math.ceil(
+            (new Date(trip.endDate) - new Date(trip.startDate)) /
+              (1000 * 60 * 60 * 24)
+          ) + 1
+        )
+      : 0;
+
+  // Total budget
+  const totalBudget = Number(trip?.budget ?? 0);
+
+  // Total expenses
+  const totalExpenses = expenses.reduce(
+    (total, expense) => total + Number(expense.amount ?? 0),
+    0
+  );
+
+  // Remaining budget
+  const remainingBudget = totalBudget - totalExpenses;
+
+  // Budget usage percentage
+  const budgetUsage =
+    totalBudget > 0
+      ? Math.round((totalExpenses / totalBudget) * 100)
+      : 0;
+
+  // Memo statistics
+  const completedMemoCount = memos.filter(
+    (memo) => memo.completed
+  ).length;
+
+  const pendingMemoCount = memos.length - completedMemoCount;
+
+  useEffect(() => {
       loadTrip();
       loadMembers();
       loadExpenses();
@@ -97,7 +152,45 @@ function TripDetail() {
       loadItineraries();
       loadFlights();
       loadMemos();
+      loadPhotos();
   }, [tripId]);
+
+  useEffect(() => {
+  let isMounted = true;
+  const objectUrls = [];
+
+  async function loadPhotoImages() {
+    try {
+      const urlEntries = await Promise.all(
+        photos.map(async (photo) => {
+          const blob = await getPhotoImage(photo.id);
+          const url = URL.createObjectURL(blob);
+
+          objectUrls.push(url);
+
+          return [photo.id, url];
+        })
+      );
+
+      if (isMounted) {
+        setPhotoUrls(Object.fromEntries(urlEntries));
+      }
+    } catch (error) {
+      console.error("Error loading photo images:", error);
+    }
+  }
+
+  if (photos.length > 0) {
+    loadPhotoImages();
+  } else {
+    setPhotoUrls({});
+  }
+
+  return () => {
+    isMounted = false;
+    objectUrls.forEach((url) => URL.revokeObjectURL(url));
+  };
+}, [photos]);
 
   async function loadTrip() {
     try {
@@ -127,6 +220,9 @@ function TripDetail() {
     console.error("Error loading memos:", error);
   }
 }
+
+
+
 
 function handleMemoInputChange(event) {
   const { name, value } = event.target;
@@ -199,6 +295,69 @@ async function handleDeleteMemo(memoId) {
       alert(`更新 Memo 失敗：${error.message}`);
     }
   }
+
+  async function loadPhotos() {
+  try {
+    const data = await getTripPhotos(tripId);
+    setPhotos(data);
+  } catch (error) {
+    console.error("Error loading photos:", error);
+  }
+}
+
+  async function handlePhotoUpload(event) {
+  event.preventDefault();
+
+  if (!selectedFile) {
+    alert("Please select a photo first.");
+    return;
+  }
+
+  try {
+    setUploadingPhoto(true);
+
+    await uploadTripPhoto(
+      tripId,
+      selectedFile,
+      photoCaption
+    );
+
+    await loadPhotos();
+
+    setSelectedFile(null);
+    setPhotoCaption("");
+
+    // Reset file input
+    event.target.reset();
+
+    alert("Photo uploaded successfully!");
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+    alert(`Photo upload failed: ${error.message}`);
+  } finally {
+    setUploadingPhoto(false);
+  }
+}
+
+async function handleDeletePhoto(photoId) {
+  const confirmed = window.confirm(
+    "Are you sure you want to delete this photo?"
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    await deletePhoto(photoId);
+    await loadPhotos();
+
+    alert("Photo deleted successfully!");
+  } catch (error) {
+    console.error("Error deleting photo:", error);
+    alert(`Failed to delete photo: ${error.message}`);
+  }
+}
 
   async function loadFlights() {
     try {
@@ -606,6 +765,14 @@ const selectedItineraries = itineraries
       {/* Feature Tabs */}
       <div className="trip-tabs">
 
+
+        <button
+          className={activeSection === "overview" ? "active" : ""}
+          onClick={() => setActiveSection("overview")}
+        >
+          📊 Overview
+        </button>
+
         <button
           className={activeSection === "members" ? "active" : ""}
           onClick={() => setActiveSection("members")}
@@ -636,7 +803,6 @@ const selectedItineraries = itineraries
         </button>
 
         
-
         <button
           className={activeSection === "expenses" ? "active" : ""}
           onClick={() => setActiveSection("expenses")}
@@ -651,7 +817,194 @@ const selectedItineraries = itineraries
           💸 Settlement
         </button>
 
+        <button
+          className={activeSection === "photos" ? "active" : ""}
+          onClick={() => setActiveSection("photos")}
+        >
+          📸 Photos
+        </button>
+
       </div>
+
+      {/* Overview */}
+{activeSection === "overview" && (
+  <section className="section overview-section">
+    <div className="section-header">
+      <div>
+        <h2>📊 Trip Overview</h2>
+        <p className="section-description">
+          Your trip at a glance
+        </p>
+      </div>
+    </div>
+
+    {/* Trip Statistics */}
+    <div className="overview-grid">
+      <div className="overview-card">
+        <div className="overview-card-icon">📅</div>
+        <div className="overview-card-label">Trip Duration</div>
+        <div className="overview-card-value">
+          {tripDuration} {tripDuration === 1 ? "day" : "days"}
+        </div>
+        <div className="overview-card-description">
+          {trip.startDate} – {trip.endDate}
+        </div>
+      </div>
+
+      <div className="overview-card">
+        <div className="overview-card-icon">👥</div>
+        <div className="overview-card-label">Travel Members</div>
+        <div className="overview-card-value">
+          {members.length}
+        </div>
+        <div className="overview-card-description">
+          {members.length === 1 ? "member" : "members"} joining
+        </div>
+      </div>
+
+      <div className="overview-card">
+        <div className="overview-card-icon">🗓️</div>
+        <div className="overview-card-label">Itinerary</div>
+        <div className="overview-card-value">
+          {itineraries.length}
+        </div>
+        <div className="overview-card-description">
+          Planned activities
+        </div>
+      </div>
+
+      <div className="overview-card">
+        <div className="overview-card-icon">✈️</div>
+        <div className="overview-card-label">Flights</div>
+        <div className="overview-card-value">
+          {flights.length}
+        </div>
+        <div className="overview-card-description">
+          Saved flight segments
+        </div>
+      </div>
+    </div>
+
+    {/* Budget Overview */}
+    <div className="overview-budget-card">
+      <div className="overview-budget-header">
+        <div>
+          <h3>💰 Budget Overview</h3>
+          <p className="section-description">
+            Track your travel expenses
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setActiveSection("expenses")}
+        >
+          View Expenses →
+        </button>
+      </div>
+
+      <div className="overview-budget-grid">
+        <div>
+          <div className="overview-card-label">Total Budget</div>
+          <div className="overview-money">
+            ${totalBudget.toLocaleString()}
+          </div>
+        </div>
+
+        <div>
+          <div className="overview-card-label">Total Expenses</div>
+          <div className="overview-money">
+            ${totalExpenses.toLocaleString()}
+          </div>
+        </div>
+
+        <div>
+          <div className="overview-card-label">Remaining Budget</div>
+          <div
+            className={`overview-money ${
+              remainingBudget < 0 ? "over-budget" : ""
+            }`}
+          >
+            ${remainingBudget.toLocaleString()}
+          </div>
+        </div>
+      </div>
+
+      <div className="overview-progress-info">
+        <span>Budget used</span>
+        <span>{budgetUsage}%</span>
+      </div>
+
+      <div
+        className="overview-progress-track"
+        role="progressbar"
+        aria-label="Budget used"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.min(budgetUsage, 100)}
+      >
+        <div
+          className={`overview-progress-fill ${
+            budgetUsage > 100 ? "over-budget" : ""
+          }`}
+          style={{
+            width: `${Math.min(budgetUsage, 100)}%`,
+          }}
+        />
+      </div>
+
+      {totalBudget === 0 ? (
+        <p className="overview-budget-note">
+          No budget set for this trip yet.
+        </p>
+      ) : budgetUsage > 100 ? (
+        <p className="overview-budget-note over-budget">
+          You have exceeded your budget by $
+          {Math.abs(remainingBudget).toLocaleString()}.
+        </p>
+      ) : (
+        <p className="overview-budget-note">
+          {budgetUsage}% of your budget has been used.
+        </p>
+      )}
+    </div>
+
+    {/* Memo Overview */}
+    <div className="overview-memo-card">
+      <div className="overview-memo-header">
+        <div>
+          <h3>📝 Travel Memos</h3>
+          <p className="section-description">
+            Keep track of your travel notes
+          </p>
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setActiveSection("memos")}
+        >
+          View Memos →
+        </button>
+      </div>
+
+      <div className="overview-memo-stats">
+        <div>
+          <span className="overview-memo-number">
+            {pendingMemoCount}
+          </span>
+          <span>Pending</span>
+        </div>
+
+        <div>
+          <span className="overview-memo-number">
+            {completedMemoCount}
+          </span>
+          <span>Completed</span>
+        </div>
+      </div>
+    </div>
+  </section>
+)}
 
       {/* Members */}
       {activeSection === "members" && (
@@ -1627,6 +1980,161 @@ const selectedItineraries = itineraries
 </div>
 
 </section>
+)}
+
+{activeSection === "photos" && (
+  <section className="photos-section">
+    <div className="section-header">
+      <div>
+        <h2>📸 Travel Photos</h2>
+        <p>Keep your favorite memories from this trip.</p>
+      </div>
+    </div>
+
+    {/* Upload Form */}
+    <form
+      className="photo-upload-form"
+      onSubmit={handlePhotoUpload}
+    >
+      <h3>Upload a Photo</h3>
+
+      <div className="form-group">
+        <label>Select Photo</label>
+        <input
+          type="file"
+          accept="image/jpeg,image/png,image/gif,image/webp"
+          onChange={(event) =>
+            setSelectedFile(event.target.files?.[0] || null)
+          }
+          required
+        />
+      </div>
+
+      <div className="form-group">
+        <label>Caption</label>
+        <input
+          type="text"
+          placeholder="Add a caption..."
+          value={photoCaption}
+          onChange={(event) =>
+            setPhotoCaption(event.target.value)
+          }
+        />
+      </div>
+
+      <button type="submit" disabled={uploadingPhoto}>
+        {uploadingPhoto ? "Uploading..." : "Upload Photo"}
+      </button>
+    </form>
+
+    {/* Photo Gallery */}
+    <div className="photo-gallery">
+      <h3>Your Photos</h3>
+
+      {photos.length === 0 ? (
+        <p className="empty-photos">
+          No photos yet. Upload your first travel memory!
+        </p>
+      ) : (
+        <div className="photo-grid">
+          {photos.map((photo) => (
+            <div className="photo-card" key={photo.id}>
+              {photoUrls[photo.id] && (
+                <img
+                  src={photoUrls[photo.id]}
+                  alt={photo.caption || "Travel photo"}
+                  onClick={() => setSelectedPhoto(photo)}
+                  className="gallery-photo"
+                />
+              )}
+
+              <div className="photo-card-info">
+                <p>{photo.caption || "Untitled photo"}</p>
+
+                <button
+                  type="button"
+                  className="delete-photo-btn"
+                  onClick={() => handleDeletePhoto(photo.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+  
+)}
+{selectedPhoto && (
+  <div
+    className="photo-lightbox"
+    onClick={() => setSelectedPhoto(null)}
+  >
+    <div
+      className="photo-lightbox-content"
+      onClick={(event) => event.stopPropagation()}
+    >
+      <button
+        type="button"
+        className="lightbox-close"
+        onClick={() => setSelectedPhoto(null)}
+      >
+        ×
+      </button>
+      {photos.length > 1 && (
+        <button
+          type="button"
+          className="lightbox-nav prev"
+          onClick={() => {
+            const currentIndex = photos.findIndex(
+              (photo) => photo.id === selectedPhoto.id
+            );
+
+            const prevIndex =
+              (currentIndex - 1 + photos.length) % photos.length;
+
+            setSelectedPhoto(photos[prevIndex]);
+          }}
+        >
+          ‹
+        </button>
+      )}
+      <img
+        src={photoUrls[selectedPhoto.id]}
+        alt={selectedPhoto.caption || "Travel photo"}
+      />
+      {photos.length > 1 && (
+        <button
+          type="button"
+          className="lightbox-nav next"
+          onClick={() => {
+            const currentIndex = photos.findIndex(
+              (photo) => photo.id === selectedPhoto.id
+            );
+
+            const nextIndex = (currentIndex + 1) % photos.length;
+
+            setSelectedPhoto(photos[nextIndex]);
+          }}
+        >
+          ›
+        </button>
+      )}
+<div className="lightbox-actions">
+  <p>{selectedPhoto.caption || "Untitled photo"}</p>
+
+  <a
+    href={photoUrls[selectedPhoto.id]}
+    download={`travel-photo-${selectedPhoto.id}.jpg`}
+    className="download-photo-btn"
+  >
+    ↓ Download
+  </a>
+</div>
+    </div>
+  </div>
 )}
     </div>
   );

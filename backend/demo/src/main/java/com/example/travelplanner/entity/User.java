@@ -19,6 +19,11 @@ public class User {
     @Column(nullable = false)
     private String nickname;
 
+    @Column(columnDefinition = "TEXT")
+    private String bio;
+
+    private String location;
+
     public User() {
     }
 
@@ -54,5 +59,21 @@ public class User {
 
     public void setNickname(String nickname) {
         this.nickname = nickname;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 }

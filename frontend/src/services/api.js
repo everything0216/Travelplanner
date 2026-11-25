@@ -20,6 +20,10 @@ async function request(url, options = {}) {
     throw new Error(`Request failed: ${response.status}`);
   }
 
+  if (response.status === 204) {
+    return null;
+  }
+
   return response.json();
 }
 
@@ -45,6 +49,25 @@ export async function createTrip(trip) {
     body: JSON.stringify(trip),
   });
 }
+
+
+export async function getMyProfile() {
+  return request(`${API_BASE_URL}/users/me`);
+}
+
+export async function updateMyProfile(profile) {
+  return request(
+    `${API_BASE_URL}/users/me`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(profile),
+    }
+  );
+}
+
 
 
 // =========================
@@ -259,4 +282,69 @@ export async function deleteMemo(tripId, memoId) {
       method: "DELETE",
     }
   );
+}
+
+export async function getMyTravelStats() {
+  return request(`${API_BASE_URL}/users/me/stats`);
+}
+
+export async function getMyTravelHistory() {
+  return request(`${API_BASE_URL}/users/me/history`);
+}
+
+
+// Upload a photo to a trip
+export async function uploadTripPhoto(tripId, file, caption = "") {
+  const formData = new FormData();
+
+  formData.append("file", file);
+  formData.append("caption", caption);
+
+  return request(`${API_BASE_URL}/trips/${tripId}/photos`, {
+    method: "POST",
+    body: formData,
+  });
+}
+
+// Get photos of a specific trip
+export async function getTripPhotos(tripId) {
+  return request(`${API_BASE_URL}/trips/${tripId}/photos`);
+}
+
+// Get all photos belonging to accessible trips
+export async function getMyPhotos() {
+  return request(`${API_BASE_URL}/users/me/photos`);
+}
+
+// Delete a photo
+export async function deletePhoto(photoId) {
+  return request(`${API_BASE_URL}/photos/${photoId}`, {
+    method: "DELETE",
+  });
+}
+
+// Get photo image URL
+export function getPhotoImageUrl(photoId) {
+  return `${API_BASE_URL}/photos/${photoId}/image`;
+}
+
+
+// Get photo image with JWT authentication
+export async function getPhotoImage(photoId) {
+  const token = localStorage.getItem("token");
+
+  const response = await fetch(
+    `${API_BASE_URL}/photos/${photoId}/image`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error("Failed to load photo.");
+  }
+
+  return response.blob();
 }
